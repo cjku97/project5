@@ -25,6 +25,7 @@ def main():
     km.fit(clusters)
     pred = km.predict(clusters)
     scores = Silhouette().score(clusters, pred)
+    print(np.mean(scores))
     plot_multipanel(clusters, labels, pred, scores)
     
 
