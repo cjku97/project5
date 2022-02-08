@@ -115,6 +115,12 @@ class KMeans:
     def get_error(self, old, new) -> float:
         """
         returns the final mean-squared error of the fit model
+        
+        inputs:
+        	old: np.ndarray
+        		a 'k x m' 2D matrix representing the old cluster centroids
+        	new: np.ndarray
+        		a 'k x m' 2D matrix representing the new cluster centroids
 
         outputs:
             float
