@@ -33,7 +33,6 @@ class KMeans:
         self.centroids = [[]]
         self.old_centroids = [[]]
         self.cluster_dict = {}
-        self.dists = [[]]
     
     def fit(self, mat: np.ndarray):
         """
@@ -76,23 +75,20 @@ class KMeans:
         # fit model
         while error > self.tol and n_iter < self.max_iter:
         	print("iteration: " + str(n_iter + 1))
-        	# 1. find the distance of each point to each centroid
-        	self.dists = cdist(self.mat, self.centroids, metric = self.metric) 
-        	# 2. reassign observations to nearest centroid and update cluster dictionary
+        	# 1. reassign observations to nearest centroid and update cluster dictionary
         	self.clusters = self.predict(self.mat)
         	self.get_clusters()
-        	# 3. find the centroids of each new cluster
+        	# 2. find the centroids of each new cluster
         	self.old_centroids = self.centroids
         	self.centroids = self.get_centroids()
         	print(self.centroids)
-        	# 4. update error of model (measure of cluster stability)
+        	# 3. update error of model (measure of cluster stability)
         	error = self.get_error(self.old_centroids, self.centroids)
         	print("Error: " + str(error))
-        	# 5. increase iteration counter
+        	# 4. increase iteration counter
         	n_iter = n_iter + 1 
         	
         	
-
     def predict(self, mat: np.ndarray) -> np.ndarray:
         """
         predicts the cluster labels for a provided 2D matrix
@@ -106,10 +102,10 @@ class KMeans:
                 a 1D array with the cluster label for each of the observations in `mat`
         """
         print("GETTING CLUSTERS")
+        dists = cdist(self.mat, self.centroids, metric = self.metric)
         new_clusters = np.zeros(self.n_obs)
         for i in range(0, self.n_obs):
-        	min_dist = min(self.dists[i])
-        	new_clusters[i] = np.where(self.dists[i] == min_dist)[0] + 1
+        	new_clusters[i] = np.where(dists[i] == min(dists[i]))[0] + 1
         return(new_clusters)
 
     def get_error(self, old, new) -> float:
@@ -143,7 +139,12 @@ class KMeans:
         	s_sum = np.zeros(self.n_feats)
         	for i in s:
         		s_sum = s_sum + self.mat[i]
-        	cent_mat[c-1] = (1/len(s)) * s_sum
+        	print("length of cluster " + str(c) + ": " + str(len(s)))
+        	# if the length of a cluster is 0 then k is too high
+        	if len(s) == 0:
+        		raise ValueError("k is too high for accurate clustering")
+        	else:
+        		cent_mat[c-1] = (1/len(s)) * s_sum
         return(cent_mat)
         	
     
