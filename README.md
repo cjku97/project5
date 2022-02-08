@@ -62,7 +62,7 @@ scores = silhouette.score(labels)
 ```
 
 ## Tasks
-[ TODO ] Complete the KMeans class with your implementation of the algorithm
+[ DONE ] Complete the KMeans class with your implementation of the algorithm
   * complete the `fit` method
   * complete the `predict` method
   * complete the `get_error` method
