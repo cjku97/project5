@@ -140,7 +140,7 @@ class KMeans:
         	for i in s:
         		s_sum = s_sum + self.mat[i]
         	print("length of cluster " + str(c) + ": " + str(len(s)))
-        	# if the length of a cluster is 0 then k is too high
+        	# if the length of a cluster is 0 then k is too high (????)
         	if len(s) == 0:
         		raise ValueError("k is too high for accurate clustering")
         	else:
