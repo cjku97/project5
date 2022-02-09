@@ -43,18 +43,20 @@ class KMeans:
                 A 2D matrix where the rows are observations and columns are features
         """
         self.mat = mat
+        
         # number of observations = number of rows
         self.n_obs = len(mat)
         print("Observations: " + str(self.n_obs))
+        # initial parameter check
+        if self.n_obs < 1:
+        	raise ValueError("You must have at least one observation")
+        if self.n_obs < self.k:
+        	raise ValueError("You cannot have more clusters than observations")
+        
         # number of features = number of columns
         self.n_feats = len(mat[0])
         print("Features: " + str(self.n_feats))
-        
         # initial parameter check
-        if self.n_obs < self.k:
-        	raise ValueError("You cannot have more clusters than observations")
-        if self.n_obs < 1:
-        	raise ValueError("You must have at least one observation")
         if self.n_feats < 1:
         	raise ValueError("You must have at least one feature")
         
