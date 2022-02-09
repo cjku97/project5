@@ -5,11 +5,11 @@ from cluster import (KMeans, Silhouette, make_clusters, plot_clusters, plot_mult
 
 def test_kmeans():
     clusters, labels = make_clusters(k=5, scale=1.2, m = 2)
-    plot_clusters(clusters, labels)
     km = KMeans(k=5)
     km.fit(clusters)
     pred = km.predict(clusters)
-    scores = Silhouette().score(clusters, pred)
-    print(np.mean(scores))
-    plot_multipanel(clusters, labels, pred, scores)
+    # scores = Silhouette().score(clusters, pred)
+    # print(np.mean(scores))
+    # plot_multipanel(clusters, labels, pred, scores)
+    pass
     
