@@ -75,8 +75,8 @@ scores = silhouette.score(labels)
   * KMeans Class
   * Silhouette Class
 
-[ TODO ] Packaging
-  * [ DONE ] pip installable module
+[ DONE ] Packaging
+  * pip installable module
   * github actions (install + pytest)
 
 # Getting Started
