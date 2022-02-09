@@ -8,7 +8,8 @@ authors = [{name = "Carolyn Ku", email = "carolyn.ku@ucsf.edu"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
+description = ["k means clustering"]
+dynamic = ["version"]
 
 [project.urls]
 Home = "https://github.com/cjku97/project5"
