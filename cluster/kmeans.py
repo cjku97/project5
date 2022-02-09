@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from scipy.spatial.distance import cdist
 from sklearn.metrics import mean_squared_error
 
@@ -32,7 +33,6 @@ class KMeans:
         self.clusters = []
         self.centroids = [[]]
         self.old_centroids = [[]]
-        self.cluster_dict = {}
     
     def fit(self, mat: np.ndarray):
         """
@@ -58,12 +58,9 @@ class KMeans:
         if self.n_feats < 1:
         	raise ValueError("You must have at least one feature")
         
-        # randomly assign observations an initial cluster from 1 to k
-        self.clusters = np.random.randint(low = 1, high = self.k+1, size = self.n_obs)
-        self.get_clusters()
-
-        # get centroids for random assignments
-        self.centroids = self.get_centroids()
+        print("FITTING OBSERVATIONS TO " + str(self.k) + " CLUSTERS")
+        # randomly assign k observations to be the initial centroids
+        self.centroids = self.mat[random.sample(range(0,self.n_obs), self.k)]
         print("RANDOM CENTROIDS")
         print(self.centroids)
         
@@ -71,13 +68,11 @@ class KMeans:
         n_iter = 0
         error = np.inf
                         
-        print("FITTING OBSERVATIONS TO " + str(self.k) + " CLUSTERS")
         # fit model
         while error > self.tol and n_iter < self.max_iter:
         	print("iteration: " + str(n_iter + 1))
         	# 1. reassign observations to nearest centroid and update cluster dictionary
         	self.clusters = self.predict(self.mat)
-        	self.get_clusters()
         	# 2. find the centroids of each new cluster
         	self.old_centroids = self.centroids
         	self.centroids = self.get_centroids()
@@ -102,11 +97,9 @@ class KMeans:
                 a 1D array with the cluster label for each of the observations in `mat`
         """
         print("GETTING CLUSTERS")
-        dists = cdist(self.mat, self.centroids, metric = self.metric)
-        new_clusters = np.zeros(self.n_obs)
-        for i in range(0, self.n_obs):
-        	new_clusters[i] = np.where(dists[i] == min(dists[i]))[0] + 1
-        return(new_clusters)
+        dists = cdist(mat, self.centroids, metric = self.metric)
+        labels = np.argmin(dists, axis = 1) + 1
+        return(labels)
 
     def get_error(self, old, new) -> float:
         """
@@ -135,23 +128,6 @@ class KMeans:
         print("GETTING CENTROIDS")
         cent_mat = np.zeros(shape = (self.k,self.n_feats))
         for c in range(1,self.k+1):
-        	s = self.cluster_dict[c]
-        	s_sum = np.zeros(self.n_feats)
-        	for i in s:
-        		s_sum = s_sum + self.mat[i]
-        	print("length of cluster " + str(c) + ": " + str(len(s)))
-        	# if the length of a cluster is 0 then k is too high (????)
-        	if len(s) == 0:
-        		raise ValueError("k is too high for accurate clustering")
-        	else:
-        		cent_mat[c-1] = (1/len(s)) * s_sum
+        	cent_mat[c - 1, :] = np.mean(self.mat[self.clusters == c, :], axis = 0)
         return(cent_mat)
-        	
-    
-    def get_clusters(self):
-    	for c in range(1, self.k+1):
-        	self.cluster_dict[c] = []
-    	for i in range(0, self.n_obs):
-    		c = self.clusters[i]
-    		self.cluster_dict[c] = self.cluster_dict[c] + [i]
         	
