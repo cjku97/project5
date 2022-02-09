@@ -71,7 +71,7 @@ scores = silhouette.score(labels)
 [ DONE ] Complete the Silhouette class with your implementation of the metric
   * complete the `score` method
 
-[ TODO ] Unit Testing
+[ DONE ] Unit Testing
   * KMeans Class
   * Silhouette Class
 
